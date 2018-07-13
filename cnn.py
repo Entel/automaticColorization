@@ -21,15 +21,16 @@ import tensorflow as tf
 HEIGHT = 255
 WIDTH = 255
 DEPTH = 3
-BATCH_SIZE = 20
+BATCH_SIZE = 8
+TRAINING_PATH = '../Train/'
 
 class CNN(object):
     def __init__(self):
         self.model = self.__model__()
         self.tensorboard = TensorBoard(log_dir = '../logs')
         self.X = []
-        for filename in os.listdir('../colornet/'):
-            self.X.append(img_to_array(load_img('colornet' + filename)))
+        for filename in os.listdir(TRAINING_PATH):
+            self.X.append(img_to_array(load_img(TRAINING_PATH + filename)))
         self.X = np.array(self.X, dtype = 'float')
         self.Xtrain = 1.0/255 * self.X
         self.datagen = ImageDataGenerator(
@@ -38,6 +39,7 @@ class CNN(object):
             rotation_range = 20,
             horizontal_flip = True)
 
+        print 'Load weights!'
         self.inception = self.load_weight()
 
     def __model__(self):
@@ -79,6 +81,7 @@ class CNN(object):
         inception = InceptionResNetV2(weights = None, include_top = True)
         inception.load_weights('../inception_resnet_v2_weights_tf_dim_ordering_tf_kernels.h5')
         inception.graph = tf.get_default_graph()
+        print 'Weight loaded'
         return inception  
 
     def create_inception_embedding(self, grayscaled_rgb):
