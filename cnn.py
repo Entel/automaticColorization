@@ -39,7 +39,7 @@ class CNN(object):
             rotation_range = 20,
             horizontal_flip = True)
 
-        print 'Load weights!'
+        print('Load weights!')
         self.inception = self.load_weight()
 
     def __model__(self):
@@ -81,7 +81,7 @@ class CNN(object):
         inception = InceptionResNetV2(weights = None, include_top = True)
         inception.load_weights('../inception_resnet_v2_weights_tf_dim_ordering_tf_kernels.h5')
         inception.graph = tf.get_default_graph()
-        print 'Weight loaded'
+        print('Weight loaded')
         return inception  
 
     def create_inception_embedding(self, grayscaled_rgb):
